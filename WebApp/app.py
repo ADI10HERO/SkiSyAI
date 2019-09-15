@@ -154,8 +154,49 @@ def cases(id):
     send_me['path'] = '../../static/image/'+path
     print('\n\n\n',send_me,'\n\n\n')
     return render_template('cases.html',caseno=int(id)+1,case=send_me)
-    
 
+# PhoneApp routes follow:
+
+@app.route('/phonetest', methods=['POST'])
+def test2():
+    #print(request.form)
+    #file pick and predict --not to touch
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    fname = request.form.get('firstname')
+    lname = request.form.get('lastname')
+    gender = request.form.get('gender')
+    age = request.form.get('age')
+    Historyofpresentillness = request.form.get('Historyofpresentillness',default='-',type=str)
+    history1 = request.form.get('history1',default='-',type=str)
+    history2 = request.form.get('history2',default='-',type=str)
+    history3 = request.form.get('history3',default='-',type=str)
+    history4 = request.form.get('history4',default='-',type=str)
+    symptom1 = request.form.get('symptom1',default='-',type=str)
+    symptom2 = request.form.get('symptom2',default='-',type=str)
+    symptom3 = request.form.get('symptom3',default='-',type=str)
+    symptom4 = request.form.get('symptom4',default='-',type=str)
+    symptom5 = request.form.get('symptom5',default='-',type=str)
+    Drugshistory = request.form.get('Drugshistory',default='-',type=str)
+    print("\n\n MYDRUG",Drugshistory,'\n\n')
+    target = os.path.join(APP_ROOT, 'static/image/')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    for file in request.files.getlist("file"):
+        filename = file.filename
+        destination = "/".join([target, filename])
+        file.save(destination)
+        model_pred = pred(destination)
+        row = Data(fname,lname,gender,age,Historyofpresentillness,
+                    history1,history2,history3,history4,
+                    symptom1,symptom2,symptom3,symptom4,symptom5,
+                    Drugshistory,destination,model_pred)
+        s.add(row)
+    s.commit()
+    
+    return str(model_pred)
+    
+    
 if __name__ == '__main__':
     app.secret_key = "dbmsisboring"
     app.run(host='0.0.0.0', port=5000,debug = True)
