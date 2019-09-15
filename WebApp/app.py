@@ -2,7 +2,7 @@ from flask import Flask, request, Response,render_template,send_file
 import jsonpickle
 import numpy as np
 import os
-import cv2
+#import cv2
 from flask import json, flash, redirect, session, abort
 from flask_cors import CORS, cross_origin
 from flask import jsonify
@@ -10,7 +10,7 @@ from keras.applications.inception_v3 import preprocess_input
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array,load_img
 import matplotlib.pyplot as plt
-import cv2
+#import cv2
 import warnings
 from sqlalchemy.orm import sessionmaker
 from db import *
