@@ -1,0 +1,10 @@
+pillow
+flask
+jsonpickle
+numpy
+cv2
+flask_cors
+keras
+matplotlib
+tensorflow
+sqlalchemy
