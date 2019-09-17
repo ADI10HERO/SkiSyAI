@@ -159,8 +159,7 @@ def cases(id):
 
 @app.route('/phonetest', methods=['POST'])
 def test2():
-    #print(request.form)
-    #file pick and predict --not to touch
+    
     Session = sessionmaker(bind=engine)
     s = Session()
     fname = request.form.get('firstname')
@@ -195,8 +194,36 @@ def test2():
     s.commit()
     
     return str(model_pred)
+
+@app.route('/phonelogin',methods=['POST','GET'])
+def login2():
+    """
+    Input: Post req w user and pswd
+    Returns : 0 - wrong id pswd
+              1 - user 
+              2 - city hospitals
+    """
+    POST_USERNAME = str(request.form['username'])
+    POST_PASSWORD = str(request.form['password'])
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
+    res1 = query.first()
+    if not res1:
+        # flash("Wrong Password")
+        return 0#home()
     
-    
+    result = query.all()
+    dbobj = result[0]
+    role = str(dbobj.district)
+
+    if role=="No":
+        session['logged_in'] = True
+        return 1#home()
+    else:
+        
+        return 2#render_template('district.html')
+
 if __name__ == '__main__':
     app.secret_key = "dbmsisboring"
-    app.run(host='0.0.0.0', port=5000,debug = True)
+    app.run(host='127.0.0.1', port=5000,debug = True)
