@@ -78,7 +78,7 @@
                 <h4 id="case_desc">Last Name: {{case.lastname}} </h4>
                 <h4 id="case_desc">Gender: {{case.gender}} </h4>
                 <h4 id="case_desc">Age: {{case.age}} </h4><br>
-                <h4 id="case_desc">History of Present Illness:</h3> 
+                <h4 id="case_desc">History of Present Illness:</h4> 
 				<li>{{case.Historyofpresentillness}}</li>
 				<br> 
 				<h3>History of the Patient</h3>
@@ -100,6 +100,9 @@
 				<h2> Image of the Patient's Affected Skin Area</h2>
                 <image src="{{ case.path }}">
                 <h3 id="case_desc">AI-Prediction : {{case.prediction}} </h3>
+                    
+                <h2>Suggesstions/Comments</h2>
+                <textarea rows="6" cols="40"></textarea>
                 
             </div>
 			
