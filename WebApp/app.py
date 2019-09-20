@@ -15,6 +15,16 @@ import warnings
 from sqlalchemy.orm import sessionmaker
 from db import *
 
+### RTX GPU 2060
+import tensorflow
+from keras.backend.tensorflow_backend import set_session
+config = tensorflow.ConfigProto()
+config.gpu_options.allow_growth = True
+#config.gpu_options.per_process_gpu_memory_fraction = 0.8
+session_tf = tensorflow.Session(config=config)
+set_session(session_tf)
+###
+
 warnings.filterwarnings('ignore')
 
 def pred(img_path):    

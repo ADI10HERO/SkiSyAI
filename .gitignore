@@ -3,4 +3,5 @@ __pycache__/
 *.Zip
 saved_models/
 .ipynb_checkpoints/
- WebApp/static/image/
+WebApp/static/image/
+
