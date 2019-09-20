@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 #import cv2
 import warnings
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import select
 from db import *
 
 ### RTX GPU 2060
@@ -55,7 +56,6 @@ def home():
         return render_template('login.html')
     else:
         return render_template('dashboard.html')
-        #return render_template('index.html')
 
 
 @app.route('/admin-login',methods=['POST'])
@@ -173,12 +173,14 @@ def cases(id):
     return render_template('cases.html',caseno=int(id)+1,case=send_me)
 
 @app.route('/user_cases', methods=['POST'])
-def user_cases():
+def user_cases(user_name):
     Session = sessionmaker(bind=engine)
     s = Session()
     query = s.query(Data)
     try:
-        res = query.all()
+        #res = query.all()
+        res=query.filter(Data.user_name=user_name)
+        #.where(Data.user_name=user_name)
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
