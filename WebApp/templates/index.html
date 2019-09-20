@@ -47,7 +47,7 @@
 	<![endif]-->
 
 	</head>
-	<body>
+	<body onload="filluser()">
 	
 	
 	<div id="fh5co-page">
@@ -160,6 +160,7 @@
 					<input id="file-picker" class="btn btn-primary btn-lg text-center" type="file" name="file" accept="image/*" required multiple>					
                     <div for="file"></div>
 					<br>
+                                        <input type="text" id="uname" style="display:none">
 					<input class="btn btn-primary btn-lg" type="submit" value="Upload!" id="upload-button">
 					<input class="btn btn-primary btn-lg" type="reset">
 
@@ -240,6 +241,10 @@
 
 
     } );
+    function filluser()
+    {
+       document.getElementById("uname").innerHTML = window.localStorage.getItem('user');
+    }
 
 </script>
 </html>
