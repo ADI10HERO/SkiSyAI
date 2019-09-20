@@ -131,8 +131,10 @@ def test():
                     Drugshistory,destination,model_pred)
         s.add(row)
     s.commit()
-    
-    return render_template('pred.html',pred = model_pred)
+    case = s.query(User).count()
+    dest_arr = destination.split('/')
+    path_img = "static/image/"+ str(dest_arr[-1])
+    return render_template('pred.html',pred = model_pred,case =case,path = path_img)
 
 @app.route('/case/<id>',methods=['POST','GET'])
 def cases(id):
@@ -154,7 +156,10 @@ def cases(id):
     send_me['path'] = '../../static/image/'+path
     print('\n\n\n',send_me,'\n\n\n')
     return render_template('cases.html',caseno=int(id)+1,case=send_me)
-
+    
+@app.route('/suggest', methods=['POST'])
+def suggest():
+    pass
 # PhoneApp routes follow:
 
 @app.route('/phonetest', methods=['POST'])
@@ -223,6 +228,7 @@ def login2():
     else:
         
         return 2#render_template('district.html')
+
 
 if __name__ == '__main__':
     app.secret_key = "dbmsisboring"

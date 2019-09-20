@@ -59,7 +59,7 @@
 					<ul>
 						<li><a href='#fh5co-footer'>About</a></li>
 						<li><a href="#fh5co-footer">Contact</a></li>
-						<li class="cta"><a href="{{url_for('home')}}">Go back?</a></li>
+						<li class="cta"><a href="{{url_for('home')}}">Logout</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -70,7 +70,7 @@
     </div>
     
     <div id="fh5co-services-section">
-		<div class="container" style ="background-color : ">
+		<div class="container" >
 			
 			<div  class="col-md-12 text-center animate-box">
 				
@@ -100,12 +100,15 @@
 				<h2> Image of the Patient's Affected Skin Area</h2>
                 <image src="{{ case.path }}">
                 <h3 id="case_desc">AI-Prediction : {{case.prediction}} </h3>
-                    
+                  <form action="{{ url_for('suggest') }}">  
                 <h2>Suggesstions/Comments</h2>
-                <textarea rows="6" cols="40"></textarea>
-                
+				<textarea rows="6" cols="40"></textarea><br><br>
+				<input class="btn btn-primary btn-lg" type="submit" value="Submit" id="cases-submit-button">
+				  </form>
             </div>
-			
+			<style>
+			.
+			</style>
 		</div>
 	</div>
 	
