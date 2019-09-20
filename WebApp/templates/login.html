@@ -111,7 +111,7 @@
 			</div>
 			<div class="login-form">
 			<div class="control-group">
-							<input type="text" class="login-field" value="" placeholder="username" name="username">
+							<input type="text" class="login-field" value="" id = "username" placeholder="username" name="username" oninput="load()">
 			<label class="login-field-icon fui-user" for="login-name"></label></div>
 			<div class="control-group">
 							<input type="password" class="login-field" value="" placeholder="password" name="password">
@@ -127,6 +127,12 @@
 		<br>
 		<br>
 	</div>
+    <script>
+        function load()
+        {
+            window.localStorage.setItem("user",document.getElementById('username').value);
+        }
+    </script>
 	<div class="container" id ="center">
 		<h1>Heatmap of Diseases</h1>
 		
