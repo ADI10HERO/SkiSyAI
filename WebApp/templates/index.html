@@ -83,33 +83,74 @@
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3 text-center fh5co-heading animate-box">
 							<form class="form-wala" id="upload-form" action="{{ url_for('test') }}" method="POST" enctype="multipart/form-data">
-    <h4>First name:</h4>
-    <input type="text" name="firstname" required >&nbsp&nbsp
-    <h4>Last name:</h4>
-    <input type="text" name="lastname" required ><br><br>
+    <h4>First name: <input type="text" name="firstname" required ></h4>
+    <h4>Last name: <input type="text" name="lastname" required ></h4>
     
     <h4>Sex:</h4>
-      <input id="Male" type="radio" name="gender" value="male" required checked>
-      <label for="Male">Male</label>
-      <input id="Female" type="radio" name="gender" value="female">
-      <label for="Female">Female</label>
-      <input id="Other" type="radio" name="gender" value="other">
-      <label for="Other">Other</label><br><br>
+      <ul>
+          <li style="display: inline">
+              <input id="Male" type="radio" name="gender" value="male" required checked>
+              <label for="Male">Male</label>
+          </li>
+          <li style="display: inline">
+              <input id="Female" type="radio" name="gender" value="female">
+              <label for="Female">Female</label>
+          </li>
+          <li style="display: inline">
+              <input id="Other" type="radio" name="gender" value="other">
+              <label for="Other">Other</label><br><br>
+          </li>
+      </ul>
     
     <h4>Age:</h4> <input type="number" required name="age" min="1" max="150"><br>
     <br>
 	<textarea placeholder="History of present illness"name="Historyofpresentillness" rows="5" cols="30"></textarea><br>
 <h4>Symptoms</h4>
-    <input type="checkbox" name="symtomp1" value="Itching">Itching<br>
-    <input type="checkbox" name="symtomp2" value="Pain">Pain<br>
-    <input type="checkbox" name="symtomp3" value="Loss_of_sensation">Loss of sensation<br>
-    <input type="checkbox" name="symtomp4" value="Allodynia">Allodynia<br>
-    <input type="checkbox" name="symtomp5" value="Asymptomatic">Asymptomatic<br><br>   
+    <table align="center">
+        <tr>
+            <td><input type="checkbox" name="symtomp1" id="symtomp1" value="Itching"></td>
+            <td><label for="symtomp1">Itching</label></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="symtomp2" id="symtomp2" value="Pain"></td>
+            <td><label for="symtomp2">Pain</label></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="symtomp3" id="symtomp3" value="Loss_of_sensation"></td>
+            <td><label for="symtomp3">Loss of sensation</label></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="symtomp4" id="symtomp4" value="Allodynia"></td>
+            <td><label for="symtomp4">Allodynia</label></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="symtomp5" id="symtomp5" value="Asymptomatic"></td>
+            <td><label for="symtomp4">Asymptomatic</label></td>
+        </tr>
+    </table>
+    <br>
+                                
 <h4>History of systemic illness</h4>
-    <input type="checkbox" name="history1" value="Diabetes">Diabetes<br>
-    <input type="checkbox" name="history2" value="Hypertension">Hypertension<br>
-    <input type="checkbox" name="history3" value="Epilepsy">Epilepsy<br>
-    <input type="checkbox" name="history4" value="TB">TB<br>
+    <table align="center">
+        <tr>
+            <td><input type="checkbox" id="history1" name="history1" value="Diabetes"></td>
+            <td><label for="history1">Diabetes</label></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="history2" name="history2" value="Hypertension"></td>
+            <td><label for="history2">Hypertension</label></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="history3" name="history3" value="Epilepsy"></td>
+            <td><label for="history3">Epilepsy</label></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="history4" name="history4" value="TB"></td>
+            <td><label for="history4">TB</label></td>
+        </tr>
+    </table>
+    <br>
+    
 <br>
     <textarea placeholder="History of Allergy, Comments"name="Drugshistory" rows="5" cols="30"></textarea><br>
 		<br><br>
