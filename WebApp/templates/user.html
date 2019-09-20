@@ -66,53 +66,32 @@
 		</div>
 	</header>
 	<div align="center" class="col-md-12 text-center animate-box btn-lg">
-		<h1>Case #{{caseno}}</h1>
+		<form action="{{url_for('user_cases')}}">
+        <input type="submit" class="btn btn-primary btn-lg"  value="Show Entries">
+        </form>
     </div>
     
-    <div id="fh5co-services-section">
-		<div class="container" ><!--style ="background-color : "-->
-			
-			<div  class="col-md-12 text-center animate-box">
-				<div class="no-list-bullet">
-                <h4 id="case_desc">First Name: {{case.firstname}} </h4>	
-                <h4 id="case_desc">Last Name: {{case.lastname}} </h4>
-                <h4 id="case_desc">Gender: {{case.gender}} </h4>
-                <h4 id="case_desc">Age: {{case.age}} </h4><br>
-                <h4 id="case_desc">History of Present Illness:</h4> 
-				<li>{{case.Historyofpresentillness}}</li>
-				<br> 
-				<h3>History of the Patient</h3>
-				
-				<li id="case_desc">{{case.history1}} </li>
-                <li id="case_desc">{{case.history2}} </li>
-                <li id="case_desc">{{case.history3}} </li>
-                <li id="case_desc">{{case.history4}} </li>
-                
-				<h3>Symptoms Seen on Patient's Skin</h3>
-				<li id="case_desc">{{case.symptom1}} </li>
-                <li id="case_desc">{{case.symptom2}} </li>
-                <li id="case_desc">{{case.symptom3}} </li>
-                <li id="case_desc">{{case.symptom4}} </li>
-                <li id="case_desc">{{case.symptom5}} </li>
-                
-				<h3>Allergy History of the Patient</h3>
+	
 
-				<li id="case_desc">{{case.Drugshistory}} </li>
-				<h2> Image of the Patient's Affected Skin Area</h2>
-                <image src="{{ case.path }}">
-                <h3 id="case_desc">AI-Prediction : {{case.prediction}} </h3><br>
-                <p id="doc_suggestion">Doctor'  s suggestion : {{ case.comment }} </p>
-                  
+    <div id="fh5co-services-section">
+		<div class="container" style ="background-color : ">
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3 text-center fh5co-heading animate-box">
+					
+				</div>
+			</div>
+			<div class="row">
+				
+			<div  class="col-md-12 text-center animate-box">
+				<ul>
+                {% for case in range(res|length) %}
+                    <li id="case_id"><a href="{{url_for('cases',id=case)}}">Case {{ case+1 }}</a></li>
+                {% endfor %}
             </div>
-			
 			</div>
 		</div>
 	</div>
-	<style>
-		.no-list-bullet{
-			list-style-type:none;
-		}
-	</style>
+	
 	
 
 	<footer id="fh5co-footer" role="contentinfo">

@@ -18,8 +18,15 @@ session.add(user)
 user = User("sam","mw","No")
 session.add(user)
 
-user = User("dinesh","iamdoc","Yes")
+user = User("prtk","kuchbhi","No")
 session.add(user)
+
+user = User("shaitan","shintan","Yes")
+session.add(user)
+
+user = User("rj","8228","Yes")
+session.add(user)
+
 # commit the record the database
 session.commit()
 

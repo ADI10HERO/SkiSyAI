@@ -66,14 +66,21 @@
 		</div>
 	</header>
 	<div align="center" class="col-md-12 text-center animate-box btn-lg">
-		<form action="{{url_for('user_cases')}}" method="POST">
-        <input type="submit" class="btn btn-primary btn-lg"  value="Show Previous Cases">
-        </form>
-        <form action="{{url_for('test')}}" method="POST">
+		<form action="{{url_for('user_entries')}}" method="POST">
+        <input type="submit" class="btn btn-primary btn-lg" value="Show Previous Cases">
+		</form>
+        
+		<form action="{{url_for('show_index')}}" method="POST">
         <input type="submit" class="btn btn-primary btn-lg"  value="Create New Case">
         </form>
     </div>
-    
+    <script>
+		function senddata()
+		{
+			var d = window.localStorage.getItem('user');
+			window.location = ;
+		}
+	</script>
 	
 
     <div id="fh5co-services-section">

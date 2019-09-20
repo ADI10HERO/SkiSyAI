@@ -86,7 +86,6 @@ def login():
         session['logged_in'] = True
         return home()
     else:
-        
         return render_template('district.html')
 
 @app.route('/entries',methods=['POST','GET'])
@@ -102,11 +101,29 @@ def show_entries():
     finally:
         print("HEREREEE",res)
         return render_template('district.html',res=res)
+@app.route('/user_entries',methods=['POST','GET'])
+def user_entries():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(Data)
+    try:
+        res = query.all()
+    except Exception as e:
+        res = ["Sorry couldnt fetch"]
+        print(e)
+    finally:
+        print("HEREREEE",res)
+        return render_template('user.html',res=res)
+
 
 @app.route('/logout')
 def logout():
     session['logged_in'] = False
     return home()
+
+@app.route('/index',methods=['POST','GET'])
+def show_index():
+    return render_template('index.html')
 
 @app.route('/image', methods=['POST'])
 def test():
@@ -129,6 +146,8 @@ def test():
     symptom4 = request.form.get('symptom4',default='-',type=str)
     symptom5 = request.form.get('symptom5',default='-',type=str)
     Drugshistory = request.form.get('Drugshistory',default='-',type=str)
+    user_name = request.form.get('user_name',default='-',type=str)
+    
     target = os.path.join(APP_ROOT, 'static/image/')
     if not os.path.isdir(target):
         os.mkdir(target)
@@ -140,13 +159,10 @@ def test():
         row = Data(fname,lname,gender,age,Historyofpresentillness,
                     history1,history2,history3,history4,
                     symptom1,symptom2,symptom3,symptom4,symptom5,
-                    Drugshistory,destination,model_pred)
+                    Drugshistory,destination,model_pred,user_name,comment=None)
         s.add(row)
     s.commit()
     case = s.query(Data).count()
-    #number of cases needed
-    print("\n\n cassses",case,'\n\n',s.query(Data),'\n\n')
-    
     dest_arr = destination.split('/')
     path_img = "static/image/"+ str(dest_arr[-1])
     return render_template('pred.html',pred = model_pred,case =case,path = path_img)
@@ -173,14 +189,14 @@ def cases(id):
     return render_template('cases.html',caseno=int(id)+1,case=send_me)
 
 @app.route('/user_cases', methods=['POST'])
-def user_cases(user_name):
+def user_cases():
     Session = sessionmaker(bind=engine)
     s = Session()
     query = s.query(Data)
     try:
-        #res = query.all()
-        res= query.filter( Data.user_name == user_name )
-        #.where(Data.user_name=user_name)
+        res = query.all()
+        # res= query.filter( Data.user_name == user_name )
+        #.where(Data.user_name = user_name)
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
@@ -191,8 +207,6 @@ def user_cases(user_name):
 @app.route('/suggest', methods=['POST'])
 def suggest():
     pass
-
-
 
 # PhoneApp routes follow:
 
