@@ -43,11 +43,13 @@ class Data(Base):
     Drugshistory = Column(String(200))
     path = Column(String(100))
     prediction = Column(String)
-
+    user_name = Column(String)
+    comment = Column(String(450))
+    status = Column(Integer)
     def __init__(self,firstname,lastname,gender,age,Historyofpresentillness,
                 history1,history2,history3,history4,
                 symptom1,symptom2,symptom3,symptom4,symptom5,
-                Drugshistory,path,prediction):
+                Drugshistory,path,prediction,user_name,comment):
         self.firstname = firstname
         self.lastname = lastname
         self.gender = gender
@@ -65,7 +67,10 @@ class Data(Base):
         self.Drugshistory = Drugshistory
         self.path = path
         self.prediction = prediction
-# create tables
+        self.user_name = user_name
+        self.comment = comment
+        self.status = 0
+# create tables 
 
 Base.metadata.create_all(engine)
 Base.metadata.create_all(engine)

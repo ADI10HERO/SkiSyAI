@@ -100,12 +100,9 @@
 				<li id="case_desc">{{case.Drugshistory}} </li>
 				<h2> Image of the Patient's Affected Skin Area</h2>
                 <image src="{{ case.path }}">
-                <h3 id="case_desc">AI-Prediction : {{case.prediction}} </h3>
-                  <form action="{{ url_for('suggest') }}">  
-                <h2>Suggesstions/Comments</h2>
-				<textarea rows="6" cols="40"></textarea><br><br>
-				<input class="btn btn-primary btn-lg" type="submit" value="Submit" id="cases-submit-button">
-				  </form>
+                <h3 id="case_desc">AI-Prediction : {{case.prediction}} </h3><br>
+                <p id="doc_suggestion">Doctor's suggestion : {{case.comment}} </p>
+                  
             </div>
 			
 			</div>

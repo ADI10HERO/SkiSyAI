@@ -1,3 +1,5 @@
+#https://prod.liveshare.vsengsaas.visualstudio.com/join?2635C8330623A7C9E2D974E921900BE27EB4
+
 from flask import Flask, request, Response,render_template,send_file
 import jsonpickle
 import numpy as np
@@ -126,7 +128,6 @@ def test():
     symptom4 = request.form.get('symptom4',default='-',type=str)
     symptom5 = request.form.get('symptom5',default='-',type=str)
     Drugshistory = request.form.get('Drugshistory',default='-',type=str)
-    print("\n\n MYDRUG",Drugshistory,'\n\n')
     target = os.path.join(APP_ROOT, 'static/image/')
     if not os.path.isdir(target):
         os.mkdir(target)
@@ -141,7 +142,10 @@ def test():
                     Drugshistory,destination,model_pred)
         s.add(row)
     s.commit()
-    case = s.query(User).count()
+    case = s.query(Data).count()
+    #number of cases needed
+    print("\n\n cassses",case,'\n\n',s.query(Data),'\n\n')
+    
     dest_arr = destination.split('/')
     path_img = "static/image/"+ str(dest_arr[-1])
     return render_template('pred.html',pred = model_pred,case =case,path = path_img)
@@ -166,10 +170,27 @@ def cases(id):
     send_me['path'] = '../../static/image/'+path
     print('\n\n\n',send_me,'\n\n\n')
     return render_template('cases.html',caseno=int(id)+1,case=send_me)
-    
+
+@app.route('/user_cases', methods=['POST'])
+def user_cases():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(Data)
+    try:
+        res = query.all()
+    except Exception as e:
+        res = ["Sorry couldnt fetch"]
+        print(e)
+    finally:
+        print("HEREREEE",res)
+        return render_template('user_cases.html',res=res)
+
 @app.route('/suggest', methods=['POST'])
 def suggest():
     pass
+
+
+
 # PhoneApp routes follow:
 
 @app.route('/phonetest', methods=['POST'])
@@ -192,7 +213,6 @@ def test2():
     symptom4 = request.form.get('symptom4',default='-',type=str)
     symptom5 = request.form.get('symptom5',default='-',type=str)
     Drugshistory = request.form.get('Drugshistory',default='-',type=str)
-    print("\n\n MYDRUG",Drugshistory,'\n\n')
     target = os.path.join(APP_ROOT, 'static/image/')
     if not os.path.isdir(target):
         os.mkdir(target)
