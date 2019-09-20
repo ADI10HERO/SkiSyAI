@@ -179,7 +179,7 @@ def user_cases(user_name):
     query = s.query(Data)
     try:
         #res = query.all()
-        res=query.filter(Data.user_name=user_name)
+        res= query.filter( Data.user_name == user_name )
         #.where(Data.user_name=user_name)
     except Exception as e:
         res = ["Sorry couldnt fetch"]
