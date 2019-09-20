@@ -66,10 +66,10 @@
 		</div>
 	</header>
 	<div align="center" class="col-md-12 text-center animate-box btn-lg">
-		<form action="#">
+		<form action="{{url_for('user_cases')}}" method="POST">
         <input type="submit" class="btn btn-primary btn-lg"  value="Show Previous Cases">
         </form>
-        <form action="{{url_for('test')}}" method="post">
+        <form action="{{url_for('test')}}" method="POST">
         <input type="submit" class="btn btn-primary btn-lg"  value="Create New Case">
         </form>
     </div>
