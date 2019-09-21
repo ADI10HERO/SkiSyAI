@@ -105,13 +105,42 @@ def show_entries():
     finally:
         print("HEREREEE",res)
         return render_template('district.html',res=res)
+
 @app.route('/user_entries',methods=['POST','GET'])
 def user_entries():
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(Data)
+    query = s.query(Data).filter(Data.status==1)
     try:
-        res = query.all()
+        res=query.all()
+    except Exception as e:
+        res = ["Sorry couldnt fetch"]
+        print(e)
+    finally:
+        print("HEREREEE",res)
+        return render_template('user.html',res=res)
+
+@app.route('/show_closed_cases',methods=['POST','GET'])
+def show_closed_cases():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(Data).filter(Data.status==2)
+    try:
+        res=query.all()
+    except Exception as e:
+        res = ["Sorry couldnt fetch"]
+        print(e)
+    finally:
+        print("HEREREEE",res)
+        return render_template('user.html',res=res)
+
+@app.route('/show_new_cases',methods=['POST','GET'])
+def show_new_cases():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(Data).filter(Data.status==0)
+    try:
+        res=query.all()
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
@@ -173,7 +202,6 @@ def test():
 
 @app.route('/case/<id>',methods=['POST','GET'])
 def cases(id):
-
     Session = sessionmaker(bind=engine)
     s = Session()
     query = s.query(Data).filter(Data.id.in_([int(id)+1]))
@@ -230,7 +258,7 @@ def end_case():
     s = Session()
     case_id = request.form.get('case_id')
     query = s.query(Data).filter(Data.id.in_([int(case_id)]))
-    res=query.update({Data.status:-1}, synchronize_session = False)
+    res=query.update({Data.status:2}, synchronize_session = False)
     s.commit()
     return show_entries()
 
