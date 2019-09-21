@@ -197,7 +197,6 @@ def cases(id):
 
 @app.route('/user_case/<id>',methods=['POST','GET'])
 def user_cases(id):
-
     Session = sessionmaker(bind=engine)
     s = Session()
     query = s.query(Data).filter(Data.id.in_([int(id)+1]))
@@ -224,10 +223,21 @@ def doc_suggest():
     suggestion = request.form.get('suggestion')
     case_id = request.form.get('case_id')
     query = s.query(Data).filter(Data.id.in_([int(case_id)]))
-    
     res=query.update({Data.comment:suggestion,Data.status:1}, synchronize_session = False)
     s.commit()
-    return render_template('district.html')
+    return show_entries()
+
+@app.route('/endcase', methods=['POST'])
+def end_case():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    case_id = request.form.get('case_id')
+    query = s.query(Data).filter(Data.id.in_([int(case_id)]))
+    res=query.update({Data.status:-1}, synchronize_session = False)
+    s.commit()
+    return show_entries()
+
+
     
 
     
