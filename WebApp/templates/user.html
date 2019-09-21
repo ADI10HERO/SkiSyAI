@@ -65,11 +65,7 @@
 			</div>
 		</div>
 	</header>
-	<div align="center" class="col-md-12 text-center animate-box btn-lg">
-		<form action="{{url_for('user_cases')}}">
-        <input type="submit" class="btn btn-primary btn-lg"  value="Show Entries">
-        </form>
-    </div>
+	
     
 	
 
@@ -85,7 +81,7 @@
 			<div  class="col-md-12 text-center animate-box">
 				<ul>
                 {% for case in range(res|length) %}
-                    <li id="case_id"><a href="{{url_for('cases',id=case)}}">Case {{ case+1 }}</a></li>
+                    <li id="case_id"><a href="{{url_for('user_cases',id=case)}}">Case {{ case+1 }}</a></li>
                 {% endfor %}
             </div>
 			</div>

@@ -49,7 +49,7 @@ class Data(Base):
     def __init__(self,firstname,lastname,gender,age,Historyofpresentillness,
                 history1,history2,history3,history4,
                 symptom1,symptom2,symptom3,symptom4,symptom5,
-                Drugshistory,path,prediction,user_name,comment):
+                Drugshistory,path,prediction,user_name,comment,status):
         self.firstname = firstname
         self.lastname = lastname
         self.gender = gender
@@ -69,7 +69,7 @@ class Data(Base):
         self.prediction = prediction
         self.user_name = user_name
         self.comment = comment
-        self.status = 0
+        self.status = status
 # create tables 
 
 Base.metadata.create_all(engine)

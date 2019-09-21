@@ -55,6 +55,10 @@ def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
+        Session = sessionmaker(bind=engine)
+        s = Session()
+        query = s.query(User)
+        print(query)
         return render_template('dashboard.html')
 
 
@@ -159,7 +163,7 @@ def test():
         row = Data(fname,lname,gender,age,Historyofpresentillness,
                     history1,history2,history3,history4,
                     symptom1,symptom2,symptom3,symptom4,symptom5,
-                    Drugshistory,destination,model_pred,user_name,comment=None)
+                    Drugshistory,destination,model_pred,user_name,comment=None,status=0)
         s.add(row)
     s.commit()
     case = s.query(Data).count()
@@ -188,25 +192,43 @@ def cases(id):
     print('\n\n\n',send_me,'\n\n\n')
     return render_template('cases.html',caseno=int(id)+1,case=send_me)
 
-@app.route('/user_cases', methods=['POST'])
-def user_cases():
+@app.route('/user_case/<id>',methods=['POST','GET'])
+def user_cases(id):
+
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(Data)
-    try:
-        res = query.all()
-        # res= query.filter( Data.user_name == user_name )
-        #.where(Data.user_name = user_name)
-    except Exception as e:
-        res = ["Sorry couldnt fetch"]
-        print(e)
-    finally:
-        print("HEREREEE",res)
-        return render_template('user_cases.html',res=res)
+    query = s.query(Data).filter(Data.id.in_([int(id)+1]))
+    res = query.all()
+    res_arr = []
+    res_dict = res[0].__dict__
+    path = res_dict['path']
+    path = path.split("//")
+    path = path[-1]
+    send_me = dict()
+    for key,val in res_dict.items():
+        if(val != '-'):
+            send_me[key] = val
+    
+    send_me['path'] = '../../static/image/'+path
+    print('\n\n\n',send_me,'\n\n\n')
+    return render_template('user_cases.html',caseno=int(id)+1,case=send_me)
+
 
 @app.route('/suggest', methods=['POST'])
-def suggest():
-    pass
+def doc_suggest():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    suggestion = request.form.get('suggestion')
+    case_id = request.form.get('case_id')
+    query = s.query(Data).filter(Data.id.in_([int(case_id)]))
+    
+    res=query.update({Data.comment:suggestion}, synchronize_session = False)
+    print('\n\n\n',suggestion,case_id,'\n\n\n')
+    session.query(Customers).filter(Customers.id! = 2).
+    s.commit()
+    
+
+    
 
 # PhoneApp routes follow:
 
