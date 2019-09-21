@@ -224,8 +224,8 @@ def doc_suggest():
     
     res=query.update({Data.comment:suggestion}, synchronize_session = False)
     print('\n\n\n',suggestion,case_id,'\n\n\n')
-    session.query(Customers).filter(Customers.id! = 2).
     s.commit()
+    return("Bas 5 min..!!")
     
 
     
