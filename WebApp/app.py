@@ -222,8 +222,7 @@ def doc_suggest():
     case_id = request.form.get('case_id')
     query = s.query(Data).filter(Data.id.in_([int(case_id)]))
     
-    res=query.update({Data.comment:suggestion}, synchronize_session = False)
-    print('\n\n\n',suggestion,case_id,'\n\n\n')
+    res=query.update({Data.comment:suggestion,Data.status:1}, synchronize_session = False)
     s.commit()
     return("Bas 5 min..!!")
     
