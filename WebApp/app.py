@@ -110,7 +110,6 @@ def show_entries():
 def user_entries():
     Session = sessionmaker(bind=engine)
     s = Session()
-<<<<<<< HEAD
     query = s.query(Data).filter(Data.status==1)
     try:
         res=query.all()
@@ -140,15 +139,11 @@ def show_new_cases():
     Session = sessionmaker(bind=engine)
     s = Session()
     query = s.query(Data).filter(Data.status==0)
-    try:
-        res=query.all()
-=======
     user_name = request.form.get('user_name')
     try:
         query = s.query(Data).filter(Data.user_name.in_([user_name]))
         res = query.all()
         # print('\n\nres',res,"\n\n")
->>>>>>> 11fafec2023c9d0e619706e2a2547a722b7f2887
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
