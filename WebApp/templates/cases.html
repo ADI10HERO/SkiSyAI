@@ -107,6 +107,10 @@
 				<input class="btn btn-primary btn-lg" type="submit" value="Submit" id="cases-submit-button">
 				<input name="case_id" value="{{case.id}}" style="display: none;">
 				  </form>
+				  <form action="{{ url_for('end_case') }}" method="POST">
+						<input class="btn btn-danger btn-lg" type="submit" value="Close Case" id="cases-submit-button">
+						<input name="case_id" value="{{case.id}}" style="display: none;">
+				</form>
             </div>
 			
 			</div>
