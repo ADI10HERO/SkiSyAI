@@ -110,6 +110,7 @@ def show_entries():
 def user_entries():
     Session = sessionmaker(bind=engine)
     s = Session()
+<<<<<<< HEAD
     query = s.query(Data).filter(Data.status==1)
     try:
         res=query.all()
@@ -141,11 +142,18 @@ def show_new_cases():
     query = s.query(Data).filter(Data.status==0)
     try:
         res=query.all()
+=======
+    user_name = request.form.get('user_name')
+    try:
+        query = s.query(Data).filter(Data.user_name.in_([user_name]))
+        res = query.all()
+        # print('\n\nres',res,"\n\n")
+>>>>>>> 11fafec2023c9d0e619706e2a2547a722b7f2887
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
     finally:
-        print("HEREREEE",res)
+        # print("\n\n\n",user_name,"HEREREEE",res,'\n\n')
         return render_template('user.html',res=res)
 
 
@@ -180,7 +188,7 @@ def test():
     symptom5 = request.form.get('symptom5',default='-',type=str)
     Drugshistory = request.form.get('Drugshistory',default='-',type=str)
     user_name = request.form.get('user_name',default='-',type=str)
-    
+    print("\n\n\n",user_name,"\n\n\n")
     target = os.path.join(APP_ROOT, 'static/image/')
     if not os.path.isdir(target):
         os.mkdir(target)
