@@ -105,18 +105,21 @@ def show_entries():
     finally:
         print("HEREREEE",res)
         return render_template('district.html',res=res)
+
 @app.route('/user_entries',methods=['POST','GET'])
 def user_entries():
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(Data)
+    user_name = request.form.get('user_name')
     try:
+        query = s.query(Data).filter(Data.user_name.in_([user_name]))
         res = query.all()
+        # print('\n\nres',res,"\n\n")
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
     finally:
-        print("HEREREEE",res)
+        # print("\n\n\n",user_name,"HEREREEE",res,'\n\n')
         return render_template('user.html',res=res)
 
 
@@ -151,7 +154,7 @@ def test():
     symptom5 = request.form.get('symptom5',default='-',type=str)
     Drugshistory = request.form.get('Drugshistory',default='-',type=str)
     user_name = request.form.get('user_name',default='-',type=str)
-    
+    print("\n\n\n",user_name,"\n\n\n")
     target = os.path.join(APP_ROOT, 'static/image/')
     if not os.path.isdir(target):
         os.mkdir(target)
@@ -224,7 +227,7 @@ def doc_suggest():
     
     res=query.update({Data.comment:suggestion,Data.status:1}, synchronize_session = False)
     s.commit()
-    return("Bas 5 min..!!")
+    return render_template('district.html')
     
 
     
