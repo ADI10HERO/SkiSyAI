@@ -16,7 +16,8 @@ Data(fname,lname,gender,age,Historyofpresentillness,
                     symptom1,symptom2,symptom3,symptom4,symptom5,
                     Drugshistory,destination,model_pred,user_name,comment=None,status='0')
 '''
-res = s.query(Frequency).all()
-print(res) 
+query = s.query(Data)
+res = query.all()
+# print(query) 
 for r in res:
-    print(r.city,r.freq,r.disease)
+    print(r.id,r.city,r.prediction,r.status,r.comment)

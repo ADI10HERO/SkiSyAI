@@ -81,7 +81,7 @@
 			<div  class="col-md-12 text-center animate-box">
 				<ul>
                 {% for case in range(res|length) %}
-                    <li id="case_id"><a href="{{url_for('user_cases',id=case)}}">Case {{ case+1 }}</a></li>
+                    <li id="case_id"><a href="{{url_for('user_cases',id=res[case].id-1)}}">Case {{ res[case].id }}</a></li>
                 {% endfor %}
             </div>
 			</div>
