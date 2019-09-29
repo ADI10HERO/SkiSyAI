@@ -4,4 +4,5 @@ __pycache__/
 saved_models/
 .ipynb_checkpoints/
 WebApp/static/image/
-WebApp/*.db
+WebApp/skiai.db
+*.db
