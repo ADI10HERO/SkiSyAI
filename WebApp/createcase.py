@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db import *
 
-engine = create_engine('sqlite:///skiai.db', echo=True)
+# engine = create_engine('sqlite:///skiai.db', echo=True)
 
 # create a Session
 Session = sessionmaker(bind=engine)
