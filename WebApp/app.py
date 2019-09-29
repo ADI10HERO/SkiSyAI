@@ -203,14 +203,14 @@ def test():
         count = s.query(Frequency).filter(Frequency.city==city and Frequency.disease==model_pred).count()
         if count:
             query = s.query(Frequency).filter(Frequency.city==city and Frequency.disease==model_pred)
-            res = query.update({Frequency.freq:(int(Frequency.freq)+1)},
+            res = query.update({Frequency.freq:((Frequency.freq)+1)},
                                 synchronize_session = False)
         else:
-            row2 = Frequency(city,disease,0)
+            row2 = Frequency(city,model_pred,0)
             s.add(row2)
             s.commit()
             query = s.query(Frequency).filter(Frequency.city==city and Frequency.disease == model_pred)
-            res = query.update({Frequency.freq:(int(Frequency.freq)+1)},
+            res = query.update({Frequency.freq:(Frequency.freq+1)},
                                 synchronize_session = False)
     s.commit()
     case = s.query(Data).count()
