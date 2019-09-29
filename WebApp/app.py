@@ -93,10 +93,38 @@ def login():
         return render_template('district.html')
 
 @app.route('/entries',methods=['POST','GET'])
-def show_entries():
+def show_new_cases_doc():
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(Data)
+    query = s.query(Data).filter(Data.status==0)
+    try:
+        res = query.all()
+    except Exception as e:
+        res = ["Sorry couldnt fetch"]
+        print(e)
+    finally:
+        print("HEREREEE",res)
+        return render_template('district.html',res=res)
+		
+@app.route('/entries-commented',methods=['POST','GET'])
+def show_commented_cases_doc():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(Data).filter(Data.status==1)
+    try:
+        res = query.all()
+    except Exception as e:
+        res = ["Sorry couldnt fetch"]
+        print(e)
+    finally:
+        print("HEREREEE",res)
+        return render_template('district.html',res=res)
+		
+@app.route('/entries-closed',methods=['POST','GET'])
+def show_closed_cases_doc():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(Data).filter(Data.status==2)
     try:
         res = query.all()
     except Exception as e:

@@ -66,11 +66,22 @@
 		</div>
 	</header>
 	<div align="center" class="col-md-12 text-center animate-box btn-lg">
-		<form action="{{url_for('show_entries')}}">
-        <input type="submit" class="btn btn-primary btn-lg"  value="Show Entries">
+		<form id= "select_case" method="POST">
+		<select id="doc_case_types">
+		<option value="{{url_for('show_new_cases_doc')}}">New Cases</option>
+		<option value="{{url_for('show_commented_cases_doc')}}">Previously Opened Cases</option>
+		<option value="{{url_for('show_closed_cases_doc')}}">Closed Cases</option>
+		</select>
+        <input type="submit" class="btn btn-primary btn-lg"  value="Show Entries" onclick="onSubmit()">
         </form>
     </div>
-    
+    <script>
+	function onSubmit(){
+	var e = document.getElementById("doc_case_types");
+	var formaction = e.options[e.selectedIndex].value;
+	 document.getElementById('select_case').action = formaction;
+	}
+	</script>
 	
 
     <div id="fh5co-services-section">
