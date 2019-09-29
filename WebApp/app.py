@@ -297,7 +297,7 @@ def doc_suggest():
     res=query.update({Data.comment:suggestion,Data.status:1}, synchronize_session = False)
     
     s.commit()
-    return show_entries()
+    return render_template('district.html')
 
 @app.route('/endcase', methods=['POST'])
 def end_case():
@@ -308,7 +308,7 @@ def end_case():
     res=query.update({Data.status:2}, synchronize_session = False)
     
     s.commit()
-    return show_entries()
+    return render_template('district.html')
 
 
     
