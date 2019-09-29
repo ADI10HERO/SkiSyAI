@@ -86,7 +86,7 @@
 				<ul>
 					
                 {% for case in range(res|length) %}
-                    <li id="case_id"><a href="{{url_for('cases',id=case)}}">Case {{ case+1 }}</a></li>
+                    <li id="case_id"><a href="{{url_for('cases',id=res[case].id-1)}}">Case {{ res[case].id }}</a></li>
                 {% endfor %}
             </div>
 			</div>
