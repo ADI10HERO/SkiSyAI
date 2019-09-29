@@ -120,6 +120,20 @@ def user_entries():
         print("HEREREEE",res)
         return render_template('user.html',res=res)
 
+@app.route('/show_new_cases',methods=['POST','GET'])
+def show_new_cases():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(Data).filter(Data.status==0)
+    try:
+        res=query.all()
+    except Exception as e:
+        res = ["Sorry couldnt fetch"]
+        print(e)
+    finally:
+        print("HEREREEE",res)
+        return render_template('user.html',res=res)
+
 @app.route('/show_closed_cases',methods=['POST','GET'])
 def show_closed_cases():
     Session = sessionmaker(bind=engine)
@@ -134,22 +148,6 @@ def show_closed_cases():
         print("HEREREEE",res)
         return render_template('user.html',res=res)
 
-@app.route('/show_new_cases',methods=['POST','GET'])
-def show_new_cases():
-    Session = sessionmaker(bind=engine)
-    s = Session()
-    query = s.query(Data).filter(Data.status==0)
-    user_name = request.form.get('user_name')
-    try:
-        query = s.query(Data).filter(Data.user_name.in_([user_name]))
-        res = query.all()
-        # print('\n\nres',res,"\n\n")
-    except Exception as e:
-        res = ["Sorry couldnt fetch"]
-        print(e)
-    finally:
-        # print("\n\n\n",user_name,"HEREREEE",res,'\n\n')
-        return render_template('user.html',res=res)
 
 
 @app.route('/logout')
@@ -195,7 +193,7 @@ def test():
         row = Data(fname,lname,gender,age,Historyofpresentillness,
                     history1,history2,history3,history4,
                     symptom1,symptom2,symptom3,symptom4,symptom5,
-                    Drugshistory,destination,model_pred,user_name,comment=None,status=0)
+                    Drugshistory,destination,model_pred,user_name,comment=None,status='0')
         s.add(row)
     s.commit()
     case = s.query(Data).count()
@@ -252,6 +250,7 @@ def doc_suggest():
     case_id = request.form.get('case_id')
     query = s.query(Data).filter(Data.id.in_([int(case_id)]))
     res=query.update({Data.comment:suggestion,Data.status:1}, synchronize_session = False)
+    
     s.commit()
     return show_entries()
 
@@ -262,6 +261,7 @@ def end_case():
     case_id = request.form.get('case_id')
     query = s.query(Data).filter(Data.id.in_([int(case_id)]))
     res=query.update({Data.status:2}, synchronize_session = False)
+    
     s.commit()
     return show_entries()
 
@@ -333,10 +333,10 @@ def login2():
 
     if role=="No":
         session['logged_in'] = True
-        return 1#home()
+        return 1 #home()
     else:
         
-        return 2#render_template('district.html')
+        return 2 #render_template('district.html')
 
 
 if __name__ == '__main__':
