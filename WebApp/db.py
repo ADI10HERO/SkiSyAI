@@ -77,6 +77,18 @@ class Data(Base):
         self.comment = comment
         self.status = status
 # create tables 
+class Frequency(Base):
+
+    __tablename__ = "frequency"
+
+    id = Column(Integer, primary_key=True)
+    city = Column(String)
+    disease = Column(String)
+    freq = Column(Integer)
+    def __init__(self, city, disease,freq):
+        self.city = city
+        self.disease = disease
+        self.freq = freq
 
 Base.metadata.create_all(engine)
 Base.metadata.create_all(engine)

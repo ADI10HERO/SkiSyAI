@@ -199,6 +199,20 @@ def test():
                     Drugshistory,destination,model_pred,user_name,comment=None,status='0')
         s.add(row)
     s.commit()
+    if model_pred!="Normal Skin":
+        count = s.query(Frequency).filter(Frequency.city==city and Frequency.disease==model_pred).count()
+        if count:
+            query = s.query(Frequency).filter(Frequency.city==city and Frequency.disease==model_pred)
+            res = query.update({Frequency.freq:(int(Frequency.freq)+1)},
+                                synchronize_session = False)
+        else:
+            row2 = Frequency(city,disease,0)
+            s.add(row2)
+            s.commit()
+            query = s.query(Frequency).filter(Frequency.city==city and Frequency.disease == model_pred)
+            res = query.update({Frequency.freq:(int(Frequency.freq)+1)},
+                                synchronize_session = False)
+    s.commit()
     case = s.query(Data).count()
     dest_arr = destination.split('/')
     path_img = "static/image/"+ str(dest_arr[-1])
