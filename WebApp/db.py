@@ -30,6 +30,9 @@ class Data(Base):
     lastname = Column(String)
     gender = Column(String)
     age = Column(String)
+    country = Column(String)
+    state = Column(String)
+    city = Column(String)
     Historyofpresentillness = Column(String(200))
     history1 = Column(String)
     history2 = Column(String)
@@ -46,7 +49,7 @@ class Data(Base):
     user_name = Column(String)
     comment = Column(String(450))
     status = Column(Integer)
-    def __init__(self,firstname,lastname,gender,age,Historyofpresentillness,
+    def __init__(self,firstname,lastname,gender,age,country,state,city,Historyofpresentillness,
                 history1,history2,history3,history4,
                 symptom1,symptom2,symptom3,symptom4,symptom5,
                 Drugshistory,path,prediction,user_name,comment,status):
@@ -54,6 +57,9 @@ class Data(Base):
         self.lastname = lastname
         self.gender = gender
         self.age = age
+        self.country = country
+        self.state = state
+        self.city = city
         self.Historyofpresentillness = Historyofpresentillness
         self.history1 = history1
         self.history2 = history2

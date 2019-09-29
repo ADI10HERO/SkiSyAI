@@ -41,6 +41,8 @@
 
 	<!-- Modernizr static/js -->
 	<script src="../static/js/modernizr-2.6.2.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+	<script src="//geodata.solutions/includes/countrystatecity.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
@@ -101,11 +103,25 @@
               <label for="Other">Other</label><br><br>
           </li>
       </ul>
-    
     <h4>Age:</h4> <input type="number" required name="age" min="1" max="150"><br>
     <br>
+	
+    <h4>Please Enter Your Nearest City</h4>
+	<select name="country" class="countries order-alpha presel-IN" id="countryId">
+	    <option value="">Select Country</option>
+	</select>
+	<br>
+	<select name="state" class="states order-alpha" id="stateId">
+		<option value="">Select State</option>
+	</select>
+	<br>
+	<select name="city" class="cities order-alpha" id="cityId">
+		<option value="">Select City</option>
+	</select>
+	<br>
+	<br>
 	<textarea placeholder="History of present illness"name="Historyofpresentillness" rows="5" cols="30"></textarea><br>
-<h4>Symptoms</h4>
+	<h4>Symptoms</h4>
     <table align="center">
         <tr>
             <td><input type="checkbox" name="symtomp1" id="symtomp1" value="Itching"></td>

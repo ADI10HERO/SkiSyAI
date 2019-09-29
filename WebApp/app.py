@@ -181,7 +181,10 @@ def test():
     symptom5 = request.form.get('symptom5',default='-',type=str)
     Drugshistory = request.form.get('Drugshistory',default='-',type=str)
     user_name = request.form.get('user_name',default='-',type=str)
-    print("\n\n\n",user_name,"\n\n\n")
+    country = request.form.get('country',default='India',type=str)
+    state = request.form.get('state',default='Maharashtra',type=str)
+    city = request.form.get('city',default='Mumbai',type=str)
+    # print("\n\n\n",user_name,"\n\n\n")
     target = os.path.join(APP_ROOT, 'static/image/')
     if not os.path.isdir(target):
         os.mkdir(target)
@@ -190,7 +193,7 @@ def test():
         destination = "/".join([target, filename])
         file.save(destination)
         model_pred = pred(destination)
-        row = Data(fname,lname,gender,age,Historyofpresentillness,
+        row = Data(fname,lname,gender,age,country,state,city,Historyofpresentillness,
                     history1,history2,history3,history4,
                     symptom1,symptom2,symptom3,symptom4,symptom5,
                     Drugshistory,destination,model_pred,user_name,comment=None,status='0')
@@ -281,6 +284,9 @@ def test2():
     lname = request.form.get('lastname')
     gender = request.form.get('gender')
     age = request.form.get('age')
+    country = request.form.get('country',default='India',type=str)
+    state = request.form.get('state',default='Maharashtra',type=str)
+    city = request.form.get('city',default='Mumbai',type=str)
     Historyofpresentillness = request.form.get('Historyofpresentillness',default='-',type=str)
     history1 = request.form.get('history1',default='-',type=str)
     history2 = request.form.get('history2',default='-',type=str)
@@ -300,7 +306,8 @@ def test2():
         destination = "/".join([target, filename])
         file.save(destination)
         model_pred = pred(destination)
-        row = Data(fname,lname,gender,age,Historyofpresentillness,
+        row = Data(fname,lname,gender,age,country,state,
+                    city,Historyofpresentillness,
                     history1,history2,history3,history4,
                     symptom1,symptom2,symptom3,symptom4,symptom5,
                     Drugshistory,destination,model_pred)
