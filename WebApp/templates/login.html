@@ -33,6 +33,19 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="../static/css/style.css">
 
+
+<!-- For leaflet maps-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+ integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+ crossorigin=""></script>
+
+  <!--heatmap on leaflet-->
+ <script src="https://cdn.jsdelivr.net/npm/leaflet-heatmap@1.0.0/leaflet-heatmap.min.js"></script> 
+ 
 	<!-- Modernizr static/js -->
 	<script src="../static/js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
@@ -135,12 +148,66 @@
     </script>
 	<div class="container" id ="center">
 		<h1>Heatmap of Diseases</h1>
-		
-			
+		<form action="" method="POST">
+			<select name="disease" id="disease">
+				<option value="Acne">Acne</option>
+				<option value="Normal Skin">Normal Skin</option>
+				<option value="Allopicia">Allopicia</option>
+				<option value="Tinea">Tinea</option>
+			</select>
+		</form>
+			<div class="map-canvas" id="map-canvas" >
+
+			</div>
 
 
 	</div>
+<script>
+// don't forget to include leaflet-heatmap.js
+var testData = {
+  max: 8,
+  data: [{lat: 24.6408, lng:46.7728, count: 3},{lat: 50.75, lng:-1.55, count: 1}, ...]
+};
 
+var baseLayer = L.tileLayer(
+  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution: '...',
+    maxZoom: 18
+  }
+);
+
+var cfg = {
+  // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+  // if scaleRadius is false it will be the constant radius used in pixels
+  "radius": 2,
+  "maxOpacity": .8,
+  // scales the radius based on map zoom
+  "scaleRadius": true,
+  // if set to false the heatmap uses the global maximum for colorization
+  // if activated: uses the data maximum within the current map boundaries
+  //   (there will always be a red spot with useLocalExtremas true)
+  "useLocalExtrema": true,
+  // which field name in your data represents the latitude - default "lat"
+  latField: 'lat',
+  // which field name in your data represents the longitude - default "lng"
+  lngField: 'lng',
+  // which field name in your data represents the data value - default "value"
+  valueField: 'count'
+};
+
+
+var heatmapLayer = new HeatmapOverlay(cfg);
+
+var map = new L.Map('map-canvas', {
+  center: new L.LatLng(25.6586, -80.3568),
+  zoom: 4,
+  layers: [baseLayer, heatmapLayer]
+});
+
+heatmapLayer.setData(testData);
+
+
+	</script>
 
 	<footer id="fh5co-footer" role="contentinfo">
 	
