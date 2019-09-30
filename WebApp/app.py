@@ -1,6 +1,6 @@
 #https://prod.liveshare.vsengsaas.visualstudio.com/join?2635C8330623A7C9E2D974E921900BE27EB4
 
-from flask import Flask, request, Response,render_template,send_file
+from flask import Flask, request, Response,render_template,send_file,jsonify
 import jsonpickle
 import numpy as np
 import os
@@ -17,7 +17,8 @@ import warnings
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import select
 from db import *
-
+import requests
+from opencage.geocoder import OpenCageGeocode
 ### RTX GPU 2060
 import tensorflow
 from keras.backend.tensorflow_backend import set_session
@@ -29,7 +30,6 @@ set_session(session_tf)
 ###
 
 warnings.filterwarnings('ignore')
-
 def pred(img_path):    
     img = load_img(img_path,target_size = (299,299)) #Load the image and set the target size to the size of input of our model
     x = img_to_array(img) #Convert the image to array
@@ -53,7 +53,7 @@ CORS(app, resources=r'/upload/*', allow_headers='Content-Type')
 @app.route('/',methods=['POST','GET'])
 def home():
     if not session.get('logged_in'):
-        return render_template('login.html')
+        return render_template('login.html',res='')
     else:
         Session = sessionmaker(bind=engine)
         s = Session()
@@ -309,6 +309,38 @@ def end_case():
     
     s.commit()
     return render_template('district.html')
+
+def geoencode(city):
+    print("\n\n\n\n\n\n\n",city,"\n\n\n\n\n\n\n")
+    key = 'd89606c6137941b8a4b6ab98eb1dea4c'
+    geocoder = OpenCageGeocode(key)
+    results = geocoder.geocode(city)
+    print(results[0])
+    return results[0]['geometry']['lat'], results[0]['geometry']['lng']
+
+
+@app.route('/heatmap', methods=['POST'])
+def heatmap():
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    disease = request.form.get('disease')
+    query = s.query(Frequency).filter(Frequency.disease==disease)
+    print("\n\n\n\n\n\n\n",query,"\n\n\n\n\n\n\n")
+
+    send_me = {}
+    send_me['max'] = query.count()
+    print("\n\n\n\n\n\n\n send me max",send_me)
+
+    data = []
+    res = query.all()
+    for i in res:
+        print('\n\n\n\n\n\n\ni',i.city,i.freq)
+        lat,lng=geoencode(i.city) 
+        data.append({'lat':lat,'lng':lng,'count':i.freq})
+    send_me['data'] = data
+    print('\n\n\n\n SEND ME',send_me,'\n\n\n')
+    return render_template('login.html',res=send_me)    
+        
 
 
     
