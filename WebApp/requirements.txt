@@ -8,3 +8,4 @@ keras
 matplotlib
 tensorflow
 sqlalchemy
+opencage
