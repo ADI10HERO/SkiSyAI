@@ -315,9 +315,12 @@ def geoencode(city):
     key = 'd89606c6137941b8a4b6ab98eb1dea4c'
     geocoder = OpenCageGeocode(key)
     results = geocoder.geocode(city)
-    print(results[0])
-    return results[0]['geometry']['lat'], results[0]['geometry']['lng']
-
+    try:
+        print(results[0])
+        return results[0]['geometry']['lat'], results[0]['geometry']['lng']
+    except:
+        return 0,0
+    
 
 @app.route('/heatmap', methods=['POST'])
 def heatmap():
