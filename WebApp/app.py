@@ -31,7 +31,7 @@ set_session(session_tf)
 
 warnings.filterwarnings('ignore')
 def pred(img_path):    
-    img = load_img(img_path,target_size = (299,299)) #Load the image and set the target size to the size of input of our model
+    img = load_img(img_path,target_size = (299, 299)) #Load the image and set the target size to the size of input of our model
     x = img_to_array(img) #Convert the image to array
     x = np.expand_dims(x,axis=0) #Convert the array to the form (1,x,y,z) 
     x = preprocess_input(x) # Use the preprocess input function o subtract the mean of all the images
@@ -312,7 +312,7 @@ def end_case():
 
 def geoencode(city):
     print("\n\n\n\n\n\n\n",city,"\n\n\n\n\n\n\n")
-    key = 'd89606c6137941b8a4b6ab98eb1dea4c'
+    key = '757f8aa83d22475e97ed4fc38568cbca'
     geocoder = OpenCageGeocode(key)
     results = geocoder.geocode(city)
     try:
