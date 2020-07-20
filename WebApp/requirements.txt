@@ -40,7 +40,7 @@ deap==1.2.2
 decorator==4.4.0
 defusedxml==0.6.0
 distributed==1.27.0
-Django==3.0.2
+Django==3.0.7
 entrypoints==0.3
 Flask==1.0.2
 Flask-Cors==3.0.8
