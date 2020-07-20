@@ -12,7 +12,7 @@ from keras.applications.inception_v3 import preprocess_input
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array,load_img
 import matplotlib.pyplot as plt
-#import cv2
+# import cv2
 import warnings
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import select
@@ -20,13 +20,13 @@ from db import *
 import requests
 from opencage.geocoder import OpenCageGeocode
 ### RTX GPU 2060
-import tensorflow
-from keras.backend.tensorflow_backend import set_session
-config = tensorflow.ConfigProto()
-config.gpu_options.allow_growth = True
+# import tensorflow
+# from keras.backend.tensorflow_backend import set_session
+# config = tensorflow.ConfigProto()
+# config.gpu_options.allow_growth = True
 #config.gpu_options.per_process_gpu_memory_fraction = 0.8
-session_tf = tensorflow.Session(config=config)
-set_session(session_tf)
+# session_tf = tensorflow.Session(config=config)
+# set_session(session_tf)
 ###
 
 warnings.filterwarnings('ignore')
@@ -36,6 +36,7 @@ def pred(img_path):
     x = np.expand_dims(x,axis=0) #Convert the array to the form (1,x,y,z) 
     x = preprocess_input(x) # Use the preprocess input function o subtract the mean of all the images
     p = np.argmax(model.predict(x)) # Store the argmax of the predictions
+    
     ##PS : MODEL GIVES INDEX WE NEED TO RETURN LABEL
     return rev_label[p]
 
@@ -84,7 +85,7 @@ def login():
     
     result = query.all()
     dbobj = result[0]
-    role = str(dbobj.district)
+    role = str(dbobj.isDoctor)
 
     if role=="No":
         session['logged_in'] = True
@@ -96,42 +97,51 @@ def login():
 def show_new_cases_doc():
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(Data).filter(Data.status==0)
+    username = str(request.form['username'])
+    user_query = s.query(User).filter(User.username==username)
+    user_res = user_query.first()
+    query = s.query(Data).filter(Data.city==user_res.city and Data.status==0)
     try:
         res = query.all()
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
     finally:
-        print("HEREREEE",res)
         return render_template('district.html',res=res)
 		
+
 @app.route('/entries-commented',methods=['POST','GET'])
 def show_commented_cases_doc():
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(Data).filter(Data.status==1)
+    username = str(request.form['username'])
+    user_query = s.query(User).filter(User.username==username)
+    user_res = user_query.first()
+    query = s.query(Data).filter(Data.city==user_res.city and Data.status==1)
     try:
         res = query.all()
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
     finally:
-        print("HEREREEE",res)
+        # print("HEREREEE",res.items())
         return render_template('district.html',res=res)
 		
 @app.route('/entries-closed',methods=['POST','GET'])
 def show_closed_cases_doc():
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(Data).filter(Data.status==2)
+    username = str(request.form['username'])
+    user_query = s.query(User).filter(User.username==username)
+    user_res = user_query.first()
+    query = s.query(Data).filter(Data.city==user_res.city and Data.status==2)
     try:
         res = query.all()
     except Exception as e:
         res = ["Sorry couldnt fetch"]
         print(e)
     finally:
-        print("HEREREEE",res)
+        # print("HEREREEE",res)
         return render_template('district.html',res=res)
 
 @app.route('/user_entries',methods=['POST','GET'])

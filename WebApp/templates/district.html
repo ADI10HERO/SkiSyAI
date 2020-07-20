@@ -67,6 +67,7 @@
 	</header>
 	<div align="center" class="col-md-12 text-center animate-box btn-lg">
 		<form id= "select_case" method="POST">
+		<input type="text" style = "display: none" id = "username_open_case" name = "username">
 		<select id="doc_case_types">
 		<option value="{{url_for('show_new_cases_doc')}}">New Cases</option>
 		<option value="{{url_for('show_commented_cases_doc')}}">Previously Opened Cases</option>
@@ -81,6 +82,13 @@
 	var formaction = e.options[e.selectedIndex].value;
 	 document.getElementById('select_case').action = formaction;
 	}
+	function senddata()
+		{
+			var d = window.localStorage.getItem('user');
+			document.getElementById("username_open_case").value = d;
+		
+		}
+		window.onload(senddata());
 	</script>
 	
 

@@ -9,22 +9,22 @@ engine = create_engine('sqlite:///skiai.db', echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-user = User("admin","password","Yes")
+user = User("admin","password","Yes", "Mumbai")
 session.add(user)
 
-user = User("adi","adi","No")
+user = User("adi","adi","No", "Pune")
 session.add(user)
 
-user = User("sam","mw","No")
+user = User("sam","mw","No", "Delhi")
 session.add(user)
 
-user = User("prtk","kuchbhi","No")
+user = User("prtk","kuchbhi","No", "Panaji")
 session.add(user)
 
-user = User("shaitan","shintan","Yes")
+user = User("shaitan","shintan","Yes", "Nagpur")
 session.add(user)
 
-user = User("rj","8228","Yes")
+user = User("rj","8228","Yes", "GandhiNagar")
 session.add(user)
 
 

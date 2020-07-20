@@ -14,12 +14,15 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String)
     password = Column(String)
-    district = Column(String)
+    isDoctor = Column(String)
+    city = Column(String)
 
-    def __init__(self, username, password, district):
+    def __init__(self, username, password, isDoctor, city):
         self.username = username
         self.password = password
-        self.district = district
+        self.isDoctor = isDoctor
+        self.city = city
+
 
 class Data(Base):
 
