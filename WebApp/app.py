@@ -430,4 +430,4 @@ def login2():
 
 if __name__ == '__main__':
     app.secret_key = "dbmsisboring"
-    app.run(host='127.0.0.1', port=5000,debug = False)
+    app.run(host='127.0.0.1', port=5000,debug = True)
