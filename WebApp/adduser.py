@@ -24,7 +24,7 @@ session.add(user)
 user = User("shaitan","shintan","Yes", "Nagpur")
 session.add(user)
 
-user = User("rj","8228","Yes", "GandhiNagar")
+user = User("rj","8228","Yes", "Pune")
 session.add(user)
 
 
