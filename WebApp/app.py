@@ -1,44 +1,32 @@
-#https://prod.liveshare.vsengsaas.visualstudio.com/join?2635C8330623A7C9E2D974E921900BE27EB4
+from flask import Flask, request, Response, render_template, send_file, \
+                  jsonify, json, flash, redirect, session, abort
+from flask_cors import CORS, cross_origin
 
-from flask import Flask, request, Response,render_template,send_file,jsonify
+from keras.applications.inception_v3 import preprocess_input
+from keras.models import load_model
+from keras.preprocessing.image import img_to_array, load_img
+
+import warnings
 import jsonpickle
 import numpy as np
 import os
-#import cv2
-from flask import json, flash, redirect, session, abort
-from flask_cors import CORS, cross_origin
-from flask import jsonify
-from keras.applications.inception_v3 import preprocess_input
-from keras.models import load_model
-from keras.preprocessing.image import img_to_array,load_img
-import matplotlib.pyplot as plt
-# import cv2
-import warnings
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql import select
-from db import *
 import requests
 from opencage.geocoder import OpenCageGeocode
-### RTX GPU 2060
-# import tensorflow
-# from keras.backend.tensorflow_backend import set_session
-# config = tensorflow.ConfigProto()
-# config.gpu_options.allow_growth = True
-#config.gpu_options.per_process_gpu_memory_fraction = 0.8
-# session_tf = tensorflow.Session(config=config)
-# set_session(session_tf)
-###
 
-warnings.filterwarnings('ignore')
-def pred(img_path):    
-    img = load_img(img_path,target_size = (299, 299)) #Load the image and set the target size to the size of input of our model
-    x = img_to_array(img) #Convert the image to array
-    x = np.expand_dims(x,axis=0) #Convert the array to the form (1,x,y,z) 
-    x = preprocess_input(x) # Use the preprocess input function o subtract the mean of all the images
-    p = np.argmax(model.predict(x)) # Store the argmax of the predictions
-    
-    ##PS : MODEL GIVES INDEX WE NEED TO RETURN LABEL
-    return rev_label[p]
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import select
+
+### GPU ###
+import tensorflow
+from keras.backend.tensorflow_backend import set_session
+config = tensorflow.ConfigProto()
+config.gpu_options.allow_growth = True
+#config.gpu_options.per_process_gpu_memory_fraction = 0.8
+session_tf = tensorflow.Session(config=config)
+set_session(session_tf)
+###########
+
+from db import *
 
 model = load_model('saved_models/new_data.hdf5')
 model._make_predict_function()
@@ -47,9 +35,23 @@ Labels ={'Acne': 0, 'Alopecia': 1, 'Normal Skin': 2, 'Tinea': 3}
 rev_label = {val:key for key,val in Labels.items()}
 engine = create_engine('sqlite:///skiai.db', echo=True)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-
 CORS(app, resources=r'/upload/*', allow_headers='Content-Type')
 
+warnings.filterwarnings('ignore')
+def pred(img_path):    
+    #Load the image and set the target size to the size of input of our model
+    img = load_img(img_path,target_size = (299, 299))
+    #Convert the image to array
+    x = img_to_array(img)
+    #Convert the array to the form (1,x,y,z)
+    x = np.expand_dims(x,axis=0) 
+    # Use the preprocess input function o subtract the mean of all the images
+    x = preprocess_input(x)
+    # Store the argmax of the predictions
+    p = np.argmax(model.predict(x)) 
+
+    ##PS : MODEL GIVES INDEX WE NEED TO RETURN LABEL
+    return rev_label[p]
 
 @app.route('/',methods=['POST','GET'])
 def home():
@@ -353,14 +355,8 @@ def heatmap():
     send_me['data'] = data
     print('\n\n\n\n SEND ME',send_me,'\n\n\n')
     return render_template('login.html',res=send_me)    
-        
 
-
-    
-
-    
-
-# PhoneApp routes follow:
+########## PhoneApp routes follow ############
 
 @app.route('/phonetest', methods=['POST'])
 def test2():
