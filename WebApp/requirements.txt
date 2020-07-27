@@ -2,7 +2,7 @@ pillow==5.4.1
 Flask==1.1.1
 Flask-Cors==3.0.8
 jsonpickle==1.2
-tensorflow-gpu==1.14.0
 keras==2.2.5
 sqlalchemy==1.3.8
 opencage==1.2
+h5py==2.10.0

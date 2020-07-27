@@ -7,7 +7,7 @@ import jsonpickle, requests, os, warnings
 import numpy as np
 
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql import select
+from sqlalchemy.sql import select, and_
 from db import *
 from opencage.geocoder import OpenCageGeocode
 
@@ -111,7 +111,7 @@ def show_new_cases_doc():
     username = str(request.form['username'])
     user_query = s.query(User).filter(User.username==username)
     user_res = user_query.first()
-    query = s.query(Data).filter(Data.city==user_res.city and Data.status==0)
+    query = s.query(Data).filter(and_(Data.city==user_res.city, Data.status==0))
     try:
         res = query.all()
     except Exception as e:
@@ -128,7 +128,7 @@ def show_commented_cases_doc():
     username = str(request.form['username'])
     user_query = s.query(User).filter(User.username==username)
     user_res = user_query.first()
-    query = s.query(Data).filter(Data.city==user_res.city and Data.status==1)
+    query = s.query(Data).filter(and_(Data.city==user_res.city, Data.status==1))
     try:
         res = query.all()
     except Exception as e:
@@ -145,7 +145,7 @@ def show_closed_cases_doc():
     username = str(request.form['username'])
     user_query = s.query(User).filter(User.username==username)
     user_res = user_query.first()
-    query = s.query(Data).filter(Data.city==user_res.city and Data.status==2)
+    query = s.query(Data).filter(and_(Data.city==user_res.city, Data.status==2))
     try:
         res = query.all()
     except Exception as e:
