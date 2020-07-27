@@ -1,42 +1,39 @@
 #https://prod.liveshare.vsengsaas.visualstudio.com/join?2635C8330623A7C9E2D974E921900BE27EB4
 
 from flask import Flask, request, Response,render_template,send_file,jsonify
-import jsonpickle
-import numpy as np
-import os
-#import cv2
 from flask import json, flash, redirect, session, abort
 from flask_cors import CORS, cross_origin
-from flask import jsonify
-from keras.applications.inception_v3 import preprocess_input
-from keras.models import load_model
-from keras.preprocessing.image import img_to_array,load_img
-import matplotlib.pyplot as plt
-# import cv2
-import warnings
+import jsonpickle, requests, os, warnings
+import numpy as np
+
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import select
 from db import *
-import requests
 from opencage.geocoder import OpenCageGeocode
-### RTX GPU 2060
-# import tensorflow
-# from keras.backend.tensorflow_backend import set_session
-# config = tensorflow.ConfigProto()
-# config.gpu_options.allow_growth = True
-#config.gpu_options.per_process_gpu_memory_fraction = 0.8
-# session_tf = tensorflow.Session(config=config)
-# set_session(session_tf)
-###
+
+try:
+    import tensorflow
+    from keras.backend.tensorflow_backend import set_session
+    config = tensorflow.compat.v1.ConfigProto()
+    config.gpu_options.allow_growth = True
+    config.gpu_options.per_process_gpu_memory_fraction = 0.8
+    session_tf = tensorflow.Session(config=config)
+    set_session(session_tf)
+except Exception as e:
+    print(e)
+
+from keras.applications.inception_v3 import preprocess_input
+from keras.models import load_model
+from keras.preprocessing.image import img_to_array,load_img
 
 warnings.filterwarnings('ignore')
-def pred(img_path):    
+def pred(img_path):
     img = load_img(img_path,target_size = (299, 299)) #Load the image and set the target size to the size of input of our model
     x = img_to_array(img) #Convert the image to array
     x = np.expand_dims(x,axis=0) #Convert the array to the form (1,x,y,z) 
     x = preprocess_input(x) # Use the preprocess input function o subtract the mean of all the images
     p = np.argmax(model.predict(x)) # Store the argmax of the predictions
-    
+
     ##PS : MODEL GIVES INDEX WE NEED TO RETURN LABEL
     return rev_label[p]
 
@@ -82,7 +79,7 @@ def login():
     if not res1:
         flash("Wrong Password")
         return home()
-    
+
     result = query.all()
     dbobj = result[0]
     role = str(dbobj.isDoctor)
@@ -108,7 +105,7 @@ def show_new_cases_doc():
         print(e)
     finally:
         return render_template('district.html',res=res)
-		
+
 
 @app.route('/entries-commented',methods=['POST','GET'])
 def show_commented_cases_doc():
@@ -126,7 +123,7 @@ def show_commented_cases_doc():
     finally:
         # print("HEREREEE",res.items())
         return render_template('district.html',res=res)
-		
+
 @app.route('/entries-closed',methods=['POST','GET'])
 def show_closed_cases_doc():
     Session = sessionmaker(bind=engine)
@@ -271,7 +268,7 @@ def cases(id):
     for key,val in res_dict.items():
         if(val != '-'):
             send_me[key] = val
-    
+
     send_me['path'] = '../../static/image/'+path
     print('\n\n\n',send_me,'\n\n\n')
     return render_template('cases.html',caseno=int(id)+1,case=send_me)
@@ -291,7 +288,7 @@ def user_cases(id):
     for key,val in res_dict.items():
         if(val != '-'):
             send_me[key] = val
-    
+
     send_me['path'] = '../../static/image/'+path
     print('\n\n\n',send_me,'\n\n\n')
     return render_template('user_cases.html',caseno=int(id)+1,case=send_me)
@@ -305,7 +302,7 @@ def doc_suggest():
     case_id = request.form.get('case_id')
     query = s.query(Data).filter(Data.id.in_([int(case_id)]))
     res=query.update({Data.comment:suggestion,Data.status:1}, synchronize_session = False)
-    
+
     s.commit()
     return render_template('district.html')
 
@@ -316,7 +313,7 @@ def end_case():
     case_id = request.form.get('case_id')
     query = s.query(Data).filter(Data.id.in_([int(case_id)]))
     res=query.update({Data.status:2}, synchronize_session = False)
-    
+
     s.commit()
     return render_template('district.html')
 
@@ -330,7 +327,7 @@ def geoencode(city):
         return results[0]['geometry']['lat'], results[0]['geometry']['lng']
     except:
         return 0,0
-    
+
 
 @app.route('/heatmap', methods=['POST'])
 def heatmap():
@@ -348,23 +345,21 @@ def heatmap():
     res = query.all()
     for i in res:
         print('\n\n\n\n\n\n\ni',i.city,i.freq)
-        lat,lng=geoencode(i.city) 
+        lat,lng=geoencode(i.city)
         data.append({'lat':lat,'lng':lng,'count':i.freq})
     send_me['data'] = data
     print('\n\n\n\n SEND ME',send_me,'\n\n\n')
-    return render_template('login.html',res=send_me)    
-        
+    return render_template('login.html',res=send_me)
 
 
-    
 
-    
+
 
 # PhoneApp routes follow:
 
 @app.route('/phonetest', methods=['POST'])
 def test2():
-    
+
     Session = sessionmaker(bind=engine)
     s = Session()
     fname = request.form.get('firstname')
@@ -400,7 +395,7 @@ def test2():
                     Drugshistory,destination,model_pred)
         s.add(row)
     s.commit()
-    
+
     return str(model_pred)
 
 @app.route('/phonelogin',methods=['POST','GET'])
@@ -408,7 +403,7 @@ def login2():
     """
     Input: Post req w user and pswd
     Returns : 0 - wrong id pswd
-              1 - user 
+              1 - user
               2 - city hospitals
     """
     POST_USERNAME = str(request.form['username'])
@@ -420,7 +415,7 @@ def login2():
     if not res1:
         # flash("Wrong Password")
         return 0#home()
-    
+
     result = query.all()
     dbobj = result[0]
     role = str(dbobj.district)
@@ -429,7 +424,7 @@ def login2():
         session['logged_in'] = True
         return 1 #home()
     else:
-        
+
         return 2 #render_template('district.html')
 
 
