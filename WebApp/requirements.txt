@@ -1,4 +1,4 @@
-pillow==5.4.1
+pillow>=6.2.2
 Flask==1.1.1
 Flask-Cors==3.0.8
 jsonpickle==1.2
