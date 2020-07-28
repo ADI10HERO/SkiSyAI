@@ -2,7 +2,7 @@
 
 Skiai is AI for SkinCare.
 
-A project developed over various stages, one of our first projects ranging over Front End, Backend, AI, Phone Mpplication domains.
+A project developed over various stages, one of our first projects ranging over Front End, Backend, AI, Mobile Application domains.
 
 <hr>
 
